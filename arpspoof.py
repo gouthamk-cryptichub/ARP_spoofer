@@ -2,12 +2,13 @@
 import scapy.all as scapy
 import time
 import sys
+import optparse
 
 def get_args():
-    parser = optparse.OptionParser()
-    parser.add_option("-t", "--target", dest="target_ip", help="IP of Target/Victim")
-    parser.add_option("-s", "--spoof", dest="spoof_ip", help="IP of Router/Receiver")
-    (value, args) = parser.parse_args()
+        parser = optparse.OptionParser()
+        parser.add_option("-t", "--target", dest="target_ip", help="IP of Target/Victim")
+        parser.add_option("-s", "--spoof", dest="spoof_ip", help="IP of Router/Receiver")
+        (value, args) = parser.parse_args()
     if not value.target_ip or value.spoof_ip:
         parser.error("[-] ERROR Missing argument, use --help or more info")
     else:
