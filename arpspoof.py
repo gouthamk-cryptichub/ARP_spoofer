@@ -4,7 +4,12 @@ import time
 import sys
 import optparse
 import argparse
+import subprocess
 
+try:
+    subprocess.call("echo 1 > /proc/sys/net/ipv4/ip_forward", shell=True, stdout=subprocess.PIPE)
+except:
+    pass
 def get_args():
     try:
         parser = optparse.OptionParser()
